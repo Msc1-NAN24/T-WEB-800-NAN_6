@@ -8,6 +8,8 @@ type:
 - refactor
 - perf
 - test
+- feat
+- fix
 
 #### branch:
   `<type>/<feature>`
