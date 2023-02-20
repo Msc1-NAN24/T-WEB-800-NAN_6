@@ -14,7 +14,7 @@ type:
 #### branch:
   `<type>/<feature>`
 #### commit:
-  `[<type>]: <description>`
+  `<type>[optional scope]: <description>`
 
 ## Repository URL
 
