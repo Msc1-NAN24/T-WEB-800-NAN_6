@@ -17,6 +17,6 @@ jobs:
       - uses: pixta-dev/repository-mirroring-action@v1
         with:
           target_repo_url:
-            git@github.com:EpitechMscProPromo2024/T-DEV-700-NAN_6.git
+            git@github.com:EpitechMscProPromo2024/T-WEB-800-NAN_6
           ssh_private_key:                              # <-- use 'secrets' to pass credential information.
             ${{ secrets.EPITECH_SSH_PRIVATE_KEY }}
