@@ -42,7 +42,7 @@ _____________
 _____________
 Back => NodeJS
 
-Front => ReactJS => Tailwind css
+Front => ReactJS => [Tailwind css](https://tailwindcss.com/docs/guides/vite)/ [Material Tailwind](https://www.material-tailwind.com/docs/react/installation)
 
 DB => MongoDB
 
