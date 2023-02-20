@@ -1,4 +1,18 @@
-# T-WEB-800
+## Git Flow:
+type:
+- build
+- chore
+- ci
+- docs
+- style
+- refactor
+- perf
+- test
+
+#### branch:
+  `<type>/<feature>`
+#### commit:
+  `[<type>]: <description>`
 
 ## Repository URL
 
