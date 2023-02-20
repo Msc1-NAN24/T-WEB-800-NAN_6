@@ -25,3 +25,33 @@ type:
 ## Commit convention:
 
 [Conventional Commits](www.conventionalcommits.org)
+
+
+_____________
+## Api
+_____________
+
+Google place Api =>  City, Bars
+
+TripAdvisor Api => Logement, Restaurant, Avis
+
+SkyScanner Api => Vols
+
+_____________
+## Technologies
+_____________
+Back => NodeJS
+
+Front => ReactJS => Tailwind css
+
+DB => MongoDB
+
+Docker
+CI/CD
+Swagger
+
+_____________
+## Code Style
+_____________
+
+Front / Back => TypeScript
