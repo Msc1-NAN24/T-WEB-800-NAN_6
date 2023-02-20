@@ -47,7 +47,9 @@ Front => ReactJS => Tailwind css
 DB => MongoDB
 
 Docker
+
 CI/CD
+
 Swagger
 
 _____________
