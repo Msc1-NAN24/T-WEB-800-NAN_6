@@ -3,7 +3,7 @@ import * as  ReactDOM from "react-dom/client";
 import "./index.css";
 import { ThemeProvider } from "@material-tailwind/react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home } from "./pages/Home";
+import { Home } from "./screens/Home";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
