@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "node .",
-    "build": "tsoa spec-and-routes && tsc",
-    "build:tsoa": "tsoa spec-and-routes",
+    "build": "tsc",
     "dev": "nodemon",
     "test": "jest"
   },
@@ -25,6 +24,8 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "amadeus": "^8.0.0",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2"
   }
 }

@@ -4,6 +4,8 @@ specifiers:
   '@types/express': ^4.17.17
   '@types/jest': ^29.4.0
   '@types/node': ^18.14.6
+  amadeus: ^8.0.0
+  dotenv: ^16.0.3
   express: ^4.18.2
   jest: ^29.4.3
   nodemon: ^2.0.21
@@ -13,6 +15,8 @@ specifiers:
   typescript: ^4.9.5
 
 dependencies:
+  amadeus: 8.0.0
+  dotenv: 16.0.3
   express: 4.18.2
 
 devDependencies:
@@ -846,6 +850,13 @@ packages:
     hasBin: true
     dev: true
 
+  /amadeus/8.0.0:
+    resolution: {integrity: sha512-k80V09SEitO8dJlUaKSDWqwnCetbWUxAiZo2t6vWTzbZV5LQoqSK8G+B31+ZqMbA7zFZdP/7LYSrqIuB1SlL0w==}
+    dependencies:
+      bluebird: 3.7.2
+      qs: 6.11.0
+    dev: false
+
   /ansi-escapes/4.3.2:
     resolution: {integrity: sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==}
     engines: {node: '>=8'}
@@ -979,6 +990,10 @@ packages:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
     dev: true
+
+  /bluebird/3.7.2:
+    resolution: {integrity: sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==}
+    dev: false
 
   /body-parser/1.20.1:
     resolution: {integrity: sha512-jWi7abTbYwajOytWCQc37VulmWiRae5RyTpaCyDcS5/lMdtwSz5lOpDE67srw/HYe35f1z3fDQw+3txg7gNtWw==}
@@ -1277,6 +1292,11 @@ packages:
     resolution: {integrity: sha512-/VTCrvm5Z0JGty/BWHljh+BAiw3IK+2j87NGMu8Nwc/f48WoDAC395uomO9ZD117ZOBaHmkX1oyLvkVM/aIT3w==}
     engines: {node: '>=0.3.1'}
     dev: true
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
+    dev: false
 
   /ee-first/1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
