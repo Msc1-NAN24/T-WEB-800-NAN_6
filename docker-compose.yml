@@ -86,9 +86,9 @@ services:
   #         memory: '512M'
   #     restart_policy:
   #       condition: on-failure
-
   #   networks:
   #     - my-network
+
 
   # bar:
   #   image: bar-image
