@@ -4,7 +4,7 @@ services:
   nginx-proxy:
     image: jwilder/nginx-proxy
     ports:
-      - "80:80"
+      - "9283:80"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     networks:
@@ -29,7 +29,7 @@ services:
       context: ./app/frontend
     container_name: app-front
     ports:
-      - "9082:80"
+      - "9282:80"
 
   #Micro-services
   # hotels:
