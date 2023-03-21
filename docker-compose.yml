@@ -1,48 +1,115 @@
-version: "3"
+version: "3.7"
 
 services:
-  # mongo:
-    # image: mongo:latest
-    # container_name: mongo
-    # environment:
-      # MONGO_INITDB_ROOT_USERNAME: ${MGUSER}
-      # MONGO_INITDB_ROOT_PASSWORD: ${MGPASSWORD}
-    # ports:
-      # - "0.0.0.0:27017:27017"
-    # networks:
-      # - MONGO
-    # volumes:
-      # - MONGO_DATA:/data/db
-      # - MONGO_CONFIG:/data/configdb
-  # mongo-express: #TODO: remove for prod
-    # image: mongo-express:latest
-    # container_name: mongo-express
-    # environment:
-      # ME_CONFIG_MONGODB_ADMINUSERNAME: ${MGUSER}
-      # ME_CONFIG_MONGODB_ADMINPASSWORD: ${MGPASSWORD}
-      # ME_CONFIG_MONGODB_SERVER: mongo
-      # ME_CONFIG_MONGODB_PORT: "27017"
-    # ports:
-      # - "0.0.0.0:8081:9081"
-    # networks:
-      # - MONGO
-    # depends_on:
-      # - mongo
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  # api-gateway:
+  #   image: api-gateway-image
+  #   deploy:
+  #     replicas: 1
+  #     placement:
+  #       constraints:
+  #         - node.role == manager
+  #     labels:
+  #       - "traefik.http.services.api-gateway.loadbalancer.server.port=8080"
+  #     restart_policy:
+  #       condition: any
+  #   networks:
+  #     - my-network
+
   front:
-    build: 
+    build:
       context: ./app/frontend
     container_name: app-front
     ports:
       - "9082:80"
 
+  #Micro-services
+  # hotels:
+  #   image: hotels-image
+  #   deploy:
+  #     replicas: 2
+  #     resources:
+  #       limits:
+  #         cpus: '0.5'
+  #         memory: '512M'
+  #     restart_policy:
+  #       condition: on-failure
+  #   networks:
+  #     - my-network
 
+  # users:
+  #   image: users-image
+  #   environment:
+  #     - DB_HOST=db
+  #     - DB_USER=root
+  #     - DB_PASSWORD=secret
+  #   deploy:
+  #     replicas: 2
+  #     resources:
+  #       limits:
+  #         cpus: '0.5'
+  #         memory: '512M'
+  #     restart_policy:
+  #       condition: on-failure
+  #   networks:
+  #     - my-network
 
-# networks:
-#   MONGO:
-#     name: MONGO
+  # vols:
+  #   image: vols-image
+  #       deploy:
+  #   deploy:
+  #     replicas: 2
+  #     resources:
+  #       limits:
+  #         cpus: '0.5'
+  #         memory: '512M'
+  #     restart_policy:
+  #       condition: on-failure
+  #   networks:
+  #     - my-network
 
-# volumes:
-#   MONGO_DATA:
-#     name: MONGO_DATA
-#   MONGO_CONFIG:
-#     name: MONGO_CONFIG
+  # evenements:
+  #   image: evenements-image
+  #   deploy:
+  #     replicas: 2
+  #     resources:
+  #       limits:
+  #         cpus: '0.5'
+  #         memory: '512M'
+  #     restart_policy:
+  #       condition: on-failure
+
+  #   networks:
+  #     - my-network
+
+  # bar:
+  #   image: bar-image
+  #   deploy:
+  #     replicas: 2
+  #     resources:
+  #       limits:
+  #         cpus: '0.5'
+  #         memory: '512M'
+  #     restart_policy:
+  #       condition: on-failure
+  #   networks:
+  #     - my-network
+
+  db:
+    image: mysql
+    environment:
+      - MYSQL_DATABASE=mydb
+      - MYSQL_ROOT_PASSWORD=secret
+    volumes:
+      - ./db_data:/var/lib/mysql
+
+networks:
+  my-network:
+    driver: overlay
+    attachable: true
