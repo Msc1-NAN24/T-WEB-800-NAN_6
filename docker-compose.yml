@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3"
 
 services:
   nginx-proxy:
@@ -7,6 +7,8 @@ services:
       - "80:80"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - my-network
 
   # api-gateway:
   #   image: api-gateway-image
@@ -108,6 +110,8 @@ services:
       - MYSQL_ROOT_PASSWORD=secret
     volumes:
       - ./db_data:/var/lib/mysql
+    networks:
+      - my-network
 
 networks:
   my-network:
