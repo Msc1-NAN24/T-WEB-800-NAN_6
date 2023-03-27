@@ -1,0 +1,38 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "name": "frontend",
+      "path": "./app/frontend"
+    },
+    {
+      "name": "user",
+      "path": "./app/services/user"
+    },
+    {
+      "name": "travel",
+      "path": "./app/services/travel"
+    },
+    {
+      "name": "sleep",
+      "path": "./app/services/sleep"
+    },
+    {
+      "name": "eat",
+      "path": "./app/services/eat"
+    },
+    {
+      "name": "drink",
+      "path": "./app/services/drink"
+    },
+    {
+      "name": "enjoy",
+      "path": "./app/services/enjoy"
+    }
+  ],
+  "settings": {
+    "jest.disabledWorkspaceFolders": ["T-WEB-800-NAN_6", "frontend"]
+  }
+}

@@ -1,12 +1,14 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import helmet from 'helmet';
-import morgan from 'morgan';
-import swaggerUi from 'swagger-ui-express';
-import swaggerJsdoc from 'swagger-jsdoc';
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
 
-const app = express();
+export const app = express();
+export const api = express.Router();
+app.use("/api", api);
 
 // Middleware pour parser les requêtes en JSON
 app.use(bodyParser.json());
@@ -18,32 +20,32 @@ app.use(cors());
 app.use(helmet());
 
 // Middleware pour logger les requêtes
-app.use(morgan('combined'));
+app.use(morgan("combined"));
 
 // Options de configuration de Swagger
 const options = {
-  swaggerDefinition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'API utilisateur',
-      version: '1.0.0',
-      description: 'API pour gérer les utilisateurs',
-    },
-    servers: [
-      {
-        url: 'http://localhost:3000',
-        description: 'Serveur local',
-      },
-    ],
-  },
-  apis: ['**/*.ts'],
+	swaggerDefinition: {
+		openapi: "3.0.0",
+		info: {
+			title: "API utilisateur",
+			version: "1.0.0",
+			description: "API pour gérer les utilisateurs",
+		},
+		servers: [
+			{
+				url: "http://localhost:3000",
+				description: "Serveur local",
+			},
+		],
+	},
+	apis: ["**/*.ts"],
 };
 
 // Initialisation de Swagger-jsdoc
 const specs = swaggerJsdoc(options);
 
 // Middleware pour afficher la documentation Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 // Route de l'application pour l'authentification
 /**
@@ -79,8 +81,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *       401:
  *         description: Échec d'authentification
  */
-app.post('/auth/login', (req, res) => {
-  // Code pour l'authentification de l'utilisateur
+api.post("/auth/login", (req, res) => {
+	// Code pour l'authentification de l'utilisateur
+	res.status(501).send("Not implemented");
 });
 
 // Route de l'application pour obtenir la liste des utilisateurs
@@ -104,8 +107,9 @@ app.post('/auth/login', (req, res) => {
  *       401:
  *         description: Non autorisé
  */
-app.get('/users', (req, res) => {
-  // Code pour obtenir la liste des utilisateurs
+api.get("/users", (req, res) => {
+	// Code pour obtenir la liste des utilisateurs
+	res.status(501).send("Not implemented");
 });
 
 // Route de l'application pour obtenir les informations d'un utilisateur
@@ -136,8 +140,9 @@ app.get('/users', (req, res) => {
  *       404:
  *         description: Utilisateur introuvable
  */
-app.get('/users/:userId', (req, res) => {
-  // Code pour obtenir les informations d'un utilisateur
+api.get("/users/:userId", (req, res) => {
+	// Code pour obtenir les informations d'un utilisateur
+	res.status(501).send("Not implemented");
 });
 
 // Route de l'application pour créer un utilisateur
@@ -167,8 +172,9 @@ app.get('/users/:userId', (req, res) => {
  *       401:
  *         description: Non autorisé
  */
-app.post('/users', (req, res) => {
-  // Code pour créer un nouvel utilisateur
+api.post("/users", (req, res) => {
+	// Code pour créer un nouvel utilisateur
+	res.status(501).send("Not implemented");
 });
 
 // Route de l'application pour mettre à jour un utilisateur
@@ -207,8 +213,9 @@ app.post('/users', (req, res) => {
  *       404:
  *         description: Utilisateur introuvable
  */
-app.put('/users/:userId', (req, res) => {
-  // Code pour mettre à jour les informations d'un utilisateur
+api.put("/users/:userId", (req, res) => {
+	// Code pour mettre à jour les informations d'un utilisateur
+	res.status(501).send("Not implemented");
 });
 
 // Route de l'application pour supprimer un utilisateur
@@ -235,8 +242,9 @@ app.put('/users/:userId', (req, res) => {
  *       404:
  *         description: Utilisateur introuvable
  */
-app.delete('/users/:userId', (req, res) => {
-  // Code pour supprimer un utilisateur
+api.delete("/users/:userId", (req, res) => {
+	// Code pour supprimer un utilisateur
+	res.status(501).send("Not implemented");
 });
 
 // Définition des composants de l'API pour Swagger
@@ -291,6 +299,6 @@ app.delete('/users/:userId', (req, res) => {
 // Port d'écoute de l'application
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-  console.log(`Service User démarré sur le port ${port}`);
+export const server = app.listen(port, () => {
+	console.log(`Service User démarré sur le port ${port}`);
 });
