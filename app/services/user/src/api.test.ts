@@ -38,13 +38,19 @@ type UserCredentials = {
 };
 
 const validPassword = "SecretP@ssword1337";
-const invalidPasswords = {
-	tooShort: "Pw@1",
-	noNumber: "SecretP@ssword",
-	noLowercase: "SECRETP@SSWORD1337",
-	noUppercase: "secretp@ssword1337",
-	noSpecialCharacter: "SecretPassword1337",
-};
+
+enum InvalidPasswords {
+	TOO_SHORT = "Pw@1",
+	NO_NUMBER = "SecretP@ssword",
+	NO_LOWERCASE = "SECRETP@SSWORD1337",
+	NO_UPPERCASE = "secretp@ssword1337",
+	NO_SPECIAL_CHARACTER = "SecretPassword1337",
+}
+
+enum UserRole {
+	USER = "user",
+	ADMIN = "admin",
+}
 
 describe("API tests", () => {
 	// Replace these with real authentication details or mock the JWT verification process
@@ -255,7 +261,7 @@ describe("API tests", () => {
 				test("Mot de passe trop court", async () => {
 					const body: UserInput = {
 						...newUserInput,
-						password: invalidPasswords.tooShort,
+						password: InvalidPasswords.TOO_SHORT,
 					};
 
 					const response = await request(app)
@@ -268,7 +274,7 @@ describe("API tests", () => {
 				test("Mot de passe ne contient pas de chiffre", async () => {
 					const body: UserInput = {
 						...newUserInput,
-						password: invalidPasswords.noNumber,
+						password: InvalidPasswords.NO_NUMBER,
 					};
 
 					const response = await request(app)
@@ -281,7 +287,7 @@ describe("API tests", () => {
 				test("Mot de passe ne contient pas de majuscule", async () => {
 					const body: UserInput = {
 						...newUserInput,
-						password: invalidPasswords.noUppercase,
+						password: InvalidPasswords.NO_UPPERCASE,
 					};
 
 					const response = await request(app)
@@ -294,7 +300,7 @@ describe("API tests", () => {
 				test("Mot de passe ne contient pas de caractère spécial", async () => {
 					const body: UserInput = {
 						...newUserInput,
-						password: invalidPasswords.noSpecialCharacter,
+						password: InvalidPasswords.NO_SPECIAL_CHARACTER,
 					};
 
 					const response = await request(app)
@@ -351,6 +357,48 @@ describe("API tests", () => {
 			test("403 - Accès refusé", async () => {
 				const response = await request(app)
 					.get("/api/users")
+					.set("Authorization", token);
+
+				expect(response.status).toBe(403);
+			});
+		});
+	});
+
+	describe("Rôles - /users/roles", () => {
+		describe("GET [ADMIN]", () => {
+			test("200 - Obtenir la liste des rôles", async () => {
+				const response = await request(app)
+					.get("/api/users/roles")
+					.set("Authorization", adminToken);
+
+				expect(response.status).toBe(200);
+				expect(response.body).toEqual(
+					expect.arrayContaining([
+						expect.objectContaining({
+							id: expect.any(Number),
+							name: expect.any(String),
+						}),
+					]),
+				);
+			});
+
+			test("401 - Échec de l'authentification (token invalide)", async () => {
+				const response = await request(app)
+					.get("/api/users/roles")
+					.set("Authorization", "invalidtoken");
+
+				expect(response.status).toBe(401);
+			});
+
+			test("401 - Échec de l'authentification (token manquant)", async () => {
+				const response = await request(app).get("/api/users/roles");
+
+				expect(response.status).toBe(401);
+			});
+
+			test("403 - Accès refusé", async () => {
+				const response = await request(app)
+					.get("/api/users/roles")
 					.set("Authorization", token);
 
 				expect(response.status).toBe(403);
@@ -478,87 +526,98 @@ describe("API tests", () => {
 		});
 	});
 
-	describe("Promotion - /users/{userId}/promote", () => {
-		describe("POST [ADMIN]", () => {
+	describe("Promotion - /users/{userId}/role", () => {
+		describe("PATCH [ADMIN]", () => {
 			afterEach(async () => {
 				// TODO: Reset the user's role
 			});
 
 			test("200 - Promotion d'un utilisateur", async () => {
 				const response = await request(app)
-					.post(`/api/users/${testUser.id}/promote`)
-					.set("Authorization", adminToken);
+					.put(`/api/users/${testUser.id}/role`)
+					.set("Authorization", adminToken)
+					.send({ role: UserRole.ADMIN });
 
 				expect(response.status).toBe(200);
 				expect(response.body).toMatchObject({
 					id: testUser.id,
-					role: "admin",
+					role: UserRole.ADMIN,
 				});
+			});
+
+			test("400 - Échec de promotion d'un utilisateur (rôle invalide)", async () => {
+				const response = await request(app)
+					.put(`/api/users/${testUser.id}/role`)
+					.set("Authorization", adminToken)
+					.send({ role: "invalidrole" });
+
+				expect(response.status).toBe(400);
 			});
 
 			test("401 - Échec de promotion d'un utilisateur (token invalide)", async () => {
 				const response = await request(app)
-					.post(`/api/users/${testUser.id}/promote`)
-					.set("Authorization", "invalidtoken");
+					.put(`/api/users/${testUser.id}/role`)
+					.set("Authorization", "invalidtoken")
+					.send({ role: UserRole.ADMIN });
+
+				expect(response.status).toBe(401);
+			});
+
+			test("401 - Échec de promotion d'un utilisateur (token manquant)", async () => {
+				const response = await request(app)
+					.put(`/api/users/${testUser.id}/role`)
+					.send({ role: UserRole.ADMIN });
 
 				expect(response.status).toBe(401);
 			});
 
 			test("403 - Échec de promotion d'un utilisateur (utilisateur non admin)", async () => {
 				const response = await request(app)
-					.post(`/api/users/${testUser.id}/promote`)
-					.set("Authorization", token);
+					.put(`/api/users/${testUser.id}/role`)
+					.set("Authorization", token)
+					.send({ role: UserRole.ADMIN });
 
 				expect(response.status).toBe(403);
 			});
 
 			test("404 - Échec de promotion d'un utilisateur (utilisateur inexistant)", async () => {
 				const response = await request(app)
-					.post(`/api/users/${testUser.id}/promote`)
-					.set("Authorization", adminToken);
+					.put(`/api/users/${testUser.id}/role`)
+					.set("Authorization", adminToken)
+					.send({ role: UserRole.ADMIN });
 
 				expect(response.status).toBe(404);
 			});
 		});
-	});
 
-	describe("Démotion - /users/{userId}/demote", () => {
-		describe("POST [ADMIN]", () => {
+		describe("DELETE [ADMIN]", () => {
 			afterEach(async () => {
 				// TODO: Reset the user's role
 			});
 
-			test("200 - Démotion d'un utilisateur", async () => {
+			test("200 - Dégradation d'un utilisateur", async () => {
 				const response = await request(app)
-					.post(`/api/users/${testUser.id}/demote`)
+					.delete(`/api/users/${testUser.id}/role`)
 					.set("Authorization", adminToken);
 
 				expect(response.status).toBe(200);
 				expect(response.body).toMatchObject({
 					id: testUser.id,
-					role: "user",
+					role: UserRole.USER,
 				});
 			});
 
-			test("401 - Échec de démotion d'un utilisateur (token invalide)", async () => {
+			test("401 - Échec de dégradation d'un utilisateur (token invalide)", async () => {
 				const response = await request(app)
-					.post(`/api/users/${testUser.id}/demote`)
+					.delete(`/api/users/${testUser.id}/role`)
 					.set("Authorization", "invalidtoken");
 
 				expect(response.status).toBe(401);
 			});
 
-			test("403 - Échec de démotion d'un utilisateur (utilisateur non admin)", async () => {
+			test("404 - Échec de dégradation d'un utilisateur (utilisateur inexistant)", async () => {
 				const response = await request(app)
-					.post(`/api/users/${testUser.id}/demote`)
-					.set("Authorization", token);
-
-				expect(response.status).toBe(403);
-			});
-
-			test("404 - Échec de démotion d'un utilisateur (utilisateur inexistant)", async () => {
-				const response = await request(app)
-					.post(`/api/users/${testUser.id}/demote`)
+					.delete(`/api/users/${testUser.id}/role`)
 					.set("Authorization", adminToken);
 
 				expect(response.status).toBe(404);
@@ -642,7 +701,7 @@ describe("API tests", () => {
 			describe("400 - Échec de modification des informations de l'utilisateur connecté (mot de passe invalide)", () => {
 				test("Mot de passe trop court", async () => {
 					const body: UserUpdateInput = {
-						password: invalidPasswords.tooShort,
+						password: InvalidPasswords.TOO_SHORT,
 						oldPassword: testUserCredentials.password,
 					};
 
@@ -656,7 +715,7 @@ describe("API tests", () => {
 
 				test("Mot de passe ne contient pas de chiffre", async () => {
 					const body: UserUpdateInput = {
-						password: invalidPasswords.noNumber,
+						password: InvalidPasswords.NO_NUMBER,
 						oldPassword: testUserCredentials.password,
 					};
 
@@ -670,7 +729,7 @@ describe("API tests", () => {
 
 				test("Mot de passe ne contient pas de majuscule", async () => {
 					const body: UserUpdateInput = {
-						password: invalidPasswords.noUppercase,
+						password: InvalidPasswords.NO_UPPERCASE,
 						oldPassword: testUserCredentials.password,
 					};
 
@@ -684,7 +743,7 @@ describe("API tests", () => {
 
 				test("Mot de passe ne contient pas de caractère spécial", async () => {
 					const body: UserUpdateInput = {
-						password: invalidPasswords.noSpecialCharacter,
+						password: InvalidPasswords.NO_SPECIAL_CHARACTER,
 						oldPassword: testUserCredentials.password,
 					};
 
