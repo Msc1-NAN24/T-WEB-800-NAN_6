@@ -80,10 +80,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *       format: date-time
  *       description: The arrival date
  *       example: 2020-01-01T15:00:00.000Z
- *     Duration:
- *       type: string
- *       description: The duration of the travel
- *       example: 2h30
  *     Price:
  *       type: number
  *       format: float
@@ -172,7 +168,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *           $ref: '#/components/schemas/MaxPrice'
  *     TravelFind:
  *       type: object
- *       required: [from_city, from_airport, to_city, to_airport, departure, arrival, duration, price, avis, nb_adults, nb_children, cabin, travel_id, travel_url, service]
+ *       required: [from_city, from_airport, to_city, to_airport, departure, arrival, price, avis, nb_adults, nb_children, cabin, travel_id, travel_url, service]
  *       properties:
  *         from_city:
  *           $ref: '#/components/schemas/FromCity'
@@ -186,8 +182,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *           $ref: '#/components/schemas/Departure'
  *         arrival:
  *           $ref: '#/components/schemas/Arrival'
- *         duration:
- *           $ref: '#/components/schemas/Duration'
  *         price:
  *           $ref: '#/components/schemas/Price'
  *         avis:
@@ -206,7 +200,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *           $ref: '#/components/schemas/Service'
  *     Travel:
  *       type: object
- *       required: [from_city, from_airport, to_city, to_airport, departure, arrival, duration, avis, travel_id, travel_url, service]
+ *       required: [from_city, from_airport, to_city, to_airport, departure, arrival, avis, travel_id, travel_url, service]
  *       properties:
  *         from_city:
  *           $ref: '#/components/schemas/FromCity'
@@ -220,8 +214,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *           $ref: '#/components/schemas/Departure'
  *         arrival:
  *           $ref: '#/components/schemas/Arrival'
- *         duration:
- *           $ref: '#/components/schemas/Duration'
  *         avis:
  *           $ref: '#/components/schemas/Avis'
  *         travel_id:
