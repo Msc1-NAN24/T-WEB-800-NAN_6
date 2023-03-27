@@ -25,7 +25,7 @@ const options = {
   swaggerDefinition: {
     openapi: '3.0.0',
     info: {
-      title: 'API enjoye',
+      title: 'API Enjoy',
       version: '1.0.0',
       description: 'API pour rechercher des événements',
     },
@@ -65,7 +65,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *         title:
  *           type: string
  *           description: The title of the event
-*           example: Visite musée du Louvre
+ *           example: Visite musée du Louvre
  *         address:
  *           type: string
  *           description: The address where the event takes place

@@ -77,14 +77,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *           type: number
  *           description: The rating of the restaurant
  *           example: 4.5
- *         nb_adults:
- *           type: number
- *           description: The number of adults that can be seated at the restaurant
- *           example: 4
- *         nb_children:
- *           type: number
- *           description: The number of children that can be seated at the restaurant
- *           example: 2
  *         description:
  *           type: string
  *           description: A description of the restaurant
@@ -94,6 +86,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *           format: date-time
  *           description: The date of the reservation
  *           example: 2020-01-01T12:00:00.000Z
+ *         service:
+ *           type: string
+ *           description: The microservice of the flight
+ *           example: TRIPADVISOR
  *     EatWithId:
  *       allOf:
  *         - $ref: '#/components/schemas/Eat'
@@ -118,20 +114,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *         required: true
  *         schema:
  *           type: string
- *       - name: nb_adults
- *         in: query
- *         description: The number of adults that can be seated at the restaurant
- *         required: true
- *         schema:
- *           type: integer
- *           format: int32
- *       - name: nb_children
- *         in: query
- *         description: The number of children that can be seated at the restaurant
- *         required: true
- *         schema:
- *           type: integer
- *           format: int32
  *       - name: date
  *         in: query
  *         description: The date when the restaurant was added to the database

@@ -54,44 +54,125 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *       scheme: bearer
  *       bearerFormat: JWT
  *   schemas:
- *     User:
+ *     FirstName:
+ *       type: string
+ *       description: Firstname of the user
+ *       example: John
+ *     LastName:
+ *       type: string
+ *       description: Lastname of the user
+ *       example: Doe
+ *     Email:
+ *       type: string
+ *       description: Email of the user
+ *       example: john.doe@example.com
+ *     Password:
+ *       type: string
+ *       description: Password of the user
+ *       example: password123
+ *     Id:
+ *       type: integer
+ *       format: int32
+ *       description: Unique identifier of the user
+ *       example: 1
+ * 
+ *     UserRegistration:
  *       type: object
  *       required:
- *         - firstName
- *         - lastName
+ *         - first_name
+ *         - last_name
  *         - email
  *         - password
- *         - isAdmin
  *       properties:
- *         firstName:
- *           type: string
- *           descritpion: Firstname of the user
- *           example: John
- *         lastName:
- *           type: string
- *           descritpion: Lastname of the user
- *           example: Doe
+ *         first_name:
+ *           $ref: '#/components/schemas/FirstName'
+ *         last_name:
+ *           $ref: '#/components/schemas/LastName'
  *         email:
- *           type: string
- *           descritpion: Email of the user
- *           example: john.doe@example.com
+ *           $ref: '#/components/schemas/Email'
  *         password:
- *           type: string
- *           descritpion: Password of the user
- *           example: password123
- *         isAdmin:
- *           type: boolean
- *           descritpion: Is the user an administrator?
- *           example: false
+ *           $ref: '#/components/schemas/Password'
+ *     UserInformation:
+ *       type: object
+ *       required:
+ *         - first_name
+ *         - last_name
+ *         - email
+ *       properties:
+ *         first_name:
+ *           $ref: '#/components/schemas/FirstName'
+ *         last_name:
+ *           $ref: '#/components/schemas/LastName'
+ *         email:
+ *           $ref: '#/components/schemas/Email'
+ *     UserLogin:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           $ref: '#/components/schemas/Email'
+ *         password:
+ *           $ref: '#/components/schemas/Password'
+ *     UserPatch:
+ *       type: object
+ *       properties:
+ *         first_name:
+ *           $ref: '#/components/schemas/FirstName'
+ *         last_name:
+ *           $ref: '#/components/schemas/LastName'
+ *         email:
+ *           $ref: '#/components/schemas/Email'
+ *         password:
+ *           $ref: '#/components/schemas/Password'
  *     UserWithId:
- *       allOf:
- *         - $ref: '#/components/schemas/User'
- *         - type: object
- *           properties:
- *             id:
- *               type: integer
- *               format: int32
+ *       type: object
+ *       required:
+ *         - id
+ *         - first_name
+ *         - last_name
+ *         - email
+ *       properties:
+ *         id:
+ *           $ref: '#/components/schemas/Id'
+ *         first_name:
+ *           $ref: '#/components/schemas/FirstName'
+ *         last_name:
+ *           $ref: '#/components/schemas/LastName'
+ *         email:
+ *           $ref: '#/components/schemas/Email'
  */
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Créer un nouvel utilisateur
+ *     description: Créer un nouvel utilisateur dans la base de données
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserRegistration'
+ *     responses:
+ *       201:
+ *         description: Utilisateur créé avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserInformation'
+ *       400:
+ *         description: Requête invalide
+ *       401:
+ *         description: Non autorisé
+ */
+app.post('/auth/register', (req, res) => {
+  // Code pour créer un nouvel utilisateur
+});
 
 /**
  * @swagger
@@ -104,14 +185,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 example: john.doe@example.com
- *               password:
- *                 type: string
- *                 example: password123
+ *             $ref: '#/components/schemas/UserLogin'
  *     responses:
  *       200:
  *         description: Authentification réussie
@@ -130,6 +204,74 @@ app.post('/auth/login', (req, res) => {
   // Code pour l'authentification de l'utilisateur
 });
 
+/**
+ * @swagger
+ * /users/me:
+ *   get:
+ *    summary: Obtenir les informations de l'utilisateur connecté
+ *    description: Obtient les informations de l'utilisateur connecté
+ *    security:
+ *      - bearerAuth: []
+ *    responses:
+ *      200:
+ *        description: Utilisateur connecté
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UserInformation'
+ *      401:
+ *        description: Non autorisé
+ *      404:
+ *        description: Utilisateur non trouvé
+ *   patch:
+ *     summary: Mettre à jour les informations de l'utilisateur connecté
+ *     description: Met à jour les informations de l'utilisateur connecté
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       description: Les informations de l'utilisateur à mettre à jour
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserPatch'
+ *     responses:
+ *       200:
+ *         description: Les informations de l'utilisateur ont été mises à jour
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserInformation'
+ *       400:
+ *         description: Requête invalide
+ *       401:
+ *         description: Non autorisé
+ *       404:
+ *         description: Utilisateur non trouvé
+ *   delete:
+ *     summary: Supprimer l'utilisateur connecté
+ *     description: Supprime l'utilisateur connecté
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       204:
+ *         description: Utilisateur supprimé avec succès
+ *       401:
+ *         description: Non autorisé
+ *       404:
+ *         description: Utilisateur non trouvé
+ */
+app.route('/users/me')
+  .get((req, res) => {
+    // Code pour obtenir les informations de l'utilisateur connecté
+  })
+  .patch((req, res) => {
+    // Code pour mettre à jour les informations de l'utilisateur connecté
+  })
+  .delete((req, res) => {
+    // Code pour supprimer l'utilisateur connecté
+  });
+
 // Route de l'application pour obtenir la liste des utilisateurs
 /**
  * @swagger
@@ -139,6 +281,7 @@ app.post('/auth/login', (req, res) => {
  *     description: Obtient la liste de tous les utilisateurs dans la base de données
  *     security:
  *       - bearerAuth: []
+ *       - adminRole: []
  *     responses:
  *       200:
  *         description: Liste des utilisateurs
@@ -164,6 +307,7 @@ app.get('/users', (req, res) => {
  *     description: Obtient les informations d'un utilisateur en fonction de son ID
  *     security:
  *       - bearerAuth: []
+ *       - adminRole: []
  *     parameters:
  *       - in: path
  *         name: userId
@@ -182,51 +326,12 @@ app.get('/users', (req, res) => {
  *         description: Non autorisé
  *       404:
  *         description: Utilisateur introuvable
- */
-app.get('/users/:userId', (req, res) => {
-  // Code pour obtenir les informations d'un utilisateur
-});
-
-// Route de l'application pour créer un utilisateur
-/**
- * @swagger
- * /users:
- *   post:
- *     summary: Créer un nouvel utilisateur
- *     description: Créer un nouvel utilisateur dans la base de données
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       201:
- *         description: Utilisateur créé avec succès
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/UserWithId'
- *       400:
- *         description: Requête invalide
- *       401:
- *         description: Non autorisé
- */
-app.post('/users', (req, res) => {
-  // Code pour créer un nouvel utilisateur
-});
-
-// Route de l'application pour mettre à jour un utilisateur
-/**
- * @swagger
- * /users/{userId}:
- *   put:
+ *   patch:
  *     summary: Mettre à jour les informations d'un utilisateur
  *     description: Mettre à jour les informations d'un utilisateur en fonction de son ID
  *     security:
  *       - bearerAuth: []
+ *       - adminRole: []
  *     parameters:
  *       - in: path
  *         name: userId
@@ -239,7 +344,7 @@ app.post('/users', (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/UserPatch'
  *     responses:
  *       200:
  *         description: Utilisateur mis à jour avec succès
@@ -253,20 +358,12 @@ app.post('/users', (req, res) => {
  *         description: Non autorisé
  *       404:
  *         description: Utilisateur introuvable
- */
-app.put('/users/:userId', (req, res) => {
-  // Code pour mettre à jour les informations d'un utilisateur
-});
-
-// Route de l'application pour supprimer un utilisateur
-/**
- * @swagger
- * /users/{userId}:
  *   delete:
  *     summary: Supprimer un utilisateur
  *     description: Supprime un utilisateur en fonction de son ID
  *     security:
  *       - bearerAuth: []
+ *       - adminRole: []
  *     parameters:
  *       - in: path
  *         name: userId
@@ -282,9 +379,16 @@ app.put('/users/:userId', (req, res) => {
  *       404:
  *         description: Utilisateur introuvable
  */
-app.delete('/users/:userId', (req, res) => {
-  // Code pour supprimer un utilisateur
-});
+app.route('/users/:userId')
+  .get((req, res) => {
+    // Code pour obtenir les informations d'un utilisateur
+  })
+  .patch((req, res) => {
+    // Code pour mettre à jour les informations d'un utilisateur
+  })
+  .delete((req, res) => {
+    // Code pour supprimer un utilisateur
+  });
 
 // Port d'écoute de l'application
 const port = process.env.PORT || 3000;

@@ -25,7 +25,7 @@ const options = {
   swaggerDefinition: {
     openapi: '3.0.0',
     info: {
-      title: 'API travel',
+      title: 'API Travel',
       version: '1.0.0',
       description: 'API pour gérer les recherches de moyens de locomotion pour voyager',
     },
@@ -68,59 +68,59 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *       properties:
  *         from_city:
  *           type: string
- *           descritpion: The city of departure
+ *           description: The city of departure
  *           example: Nantes
  *         from_airport:
  *           type: string
- *           descritpion: The airport of departure
+ *           description: The airport of departure
  *           example: NTE
  *         to_city:
  *           type: string
- *           descritpion: The city of arrival
+ *           description: The city of arrival
  *           example: Paris
  *         to_airport:
  *           type: string
- *           descritpion: The airport of arrival
+ *           description: The airport of arrival
  *           example: CDG
  *         departure:
  *           type: string
  *           format: date-time
- *           descritpion: The departure date
+ *           description: The departure date
  *           example: 2020-01-01T12:00:00.000Z
  *         arrival:
  *           type: string
  *           format: date-time
- *           descritpion: The arrival date
+ *           description: The arrival date
  *           example: 2020-01-01T15:00:00.000Z
  *         duration:
  *           type: string
- *           descritpion: The duration of the flight
+ *           description: The duration of the flight
  *           example: 2h30
  *         price:
  *           type: number
  *           format: float
- *           descritpion: The price of the flight
+ *           description: The price of the flight
  *           example: 100.00
  *         nb_adults:
  *           type: integer
  *           format: int32
- *           descritpion: The number of adult passengers
+ *           description: The number of adult passengers
  *           example: 1
  *         nb_children:
  *           type: integer
  *           format: int32
- *           descritpion: The number of child passengers
+ *           description: The number of child passengers
  *           example: 0
  *         cabin:
  *           type: string
- *           descritpion: The cabin class
+ *           description: The cabin class
  *         flight_number:
  *           type: string
- *           descritpion: The flight number
+ *           description: The flight number
  *           example: AF1234
  *         service:
  *           type: string
- *           descritpion: The microservice of the flight
+ *           description: The microservice of the flight
  *           example: AIRFRANCE
  *     TravelWithId:
  *       allOf:
