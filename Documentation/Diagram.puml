@@ -97,10 +97,16 @@ class TripStep {
     ' nbChildren: int
     price: int
     isReserved: bool
+    isShared: bool
+}
 
+class SharedTrip {
+    id: int
+    name: string
 }
 
 
+SharedTrip --> TripStep: "1..*"
 User --> UserTrip: "1..*"
 UserTrip <-- Trip: "1..*"
 Trip --> TripStep: "1..*"

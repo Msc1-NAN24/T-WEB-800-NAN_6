@@ -98,6 +98,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 /**
  * @swagger
+ * /trips/{id}/verify:
+ *   post: Verifie si toutes les étapes du voyage sont à jour
+ */
+
+/**
+ * @swagger
  * /trips/{id}/steps:
  *   get:
  *     summary: Récupère la liste des étapes d'un voyage
@@ -118,16 +124,23 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 /**
  * @swagger
+ * /trips/{id}/steps/{idStep}/verify:
+ *   post:
+ *     summary: Verifie si l'étape du voyage est à jour
+ */
+
+/**
+ * @swagger
  * /trips/share/{id}:
  *   post:
- *    summary: Partage un voyage (va dupliquer le voyage et créer un nouveau voyage pour l'utilisateur connecté. Cela va retourner un code qui va être l'id du nouveau voyage. Il sera valable 24heures et il pourra être utilisé pour récupérer le voyage par un autre utilisateur)
+ *    summary: Créer un SharedTrip qui va contenir des copies des TripSteps actuels => Travel peut être dans plusieurs TripSteps
  */
 
 /**
  * @swagger
  * /trips/import/{id}:
  *   post:
- *     summary: Importe un voyage qui va duppliquer le voyage pour l'utilisateur connecté
+ *     summary: Importe un voyage qui va créer un trip à partir du sharedTrip importé
  */
 
 // Port d'écoute de l'application
