@@ -504,7 +504,7 @@ describe("API tests", () => {
 			});
 		});
 
-		describe("PUT [USER]", () => {
+		describe("PATCH [USER]", () => {
 			afterEach(async () => {
 				// TODO: Reset the user's information
 			});
@@ -607,6 +607,70 @@ describe("API tests", () => {
 
 					expect(response.status).toBe(400);
 				});
+			});
+
+			test("400 - Échec de modification des informations de l'utilisateur connecté (ancien mot de passe manquant)", async () => {
+				const body: Omit<UserUpdateInput, "oldPassword"> = {
+					password: newUserInput.password,
+				};
+
+				const response = await request(app)
+					.patch("/api/users/me")
+					.set("Authorization", token)
+					.send(body);
+
+				expect(response.status).toBe(400);
+			});
+
+			test("401 - Échec de modification des informations de l'utilisateur connecté (token invalide)", async () => {
+				const body: UserInput = {
+					...newUserInput,
+				};
+
+				const response = await request(app)
+					.patch("/api/users/me")
+					.set("Authorization", "invalidtoken")
+					.send(body);
+
+				expect(response.status).toBe(401);
+			});
+
+			test("401 - Échec de modification des informations de l'utilisateur connecté (token manquant)", async () => {
+				const body: UserInput = {
+					...newUserInput,
+				};
+
+				const response = await request(app).patch("/api/users/me").send(body);
+
+				expect(response.status).toBe(401);
+			});
+
+			test("401 - Échec de modification des informations de l'utilisateur connecté (ancien mot de passe invalide)", async () => {
+				const body: UserUpdateInput = {
+					password: newUserInput.password,
+					oldPassword: "invalidpassword",
+				};
+
+				const response = await request(app)
+					.patch("/api/users/me")
+					.set("Authorization", token)
+					.send(body);
+
+				expect(response.status).toBe(401);
+			});
+
+			test("409 - Échec de modification des informations de l'utilisateur connecté (email déjà utilisé)", async () => {
+				const body: UserInput = {
+					...newUserInput,
+					email: testUserCredentials.email,
+				};
+
+				const response = await request(app)
+					.patch("/api/users/me")
+					.set("Authorization", token)
+					.send(body);
+
+				expect(response.status).toBe(400);
 			});
 		});
 
