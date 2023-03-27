@@ -478,6 +478,94 @@ describe("API tests", () => {
 		});
 	});
 
+	describe("Promotion - /users/{userId}/promote", () => {
+		describe("POST [ADMIN]", () => {
+			afterEach(async () => {
+				// TODO: Reset the user's role
+			});
+
+			test("200 - Promotion d'un utilisateur", async () => {
+				const response = await request(app)
+					.post(`/api/users/${testUser.id}/promote`)
+					.set("Authorization", adminToken);
+
+				expect(response.status).toBe(200);
+				expect(response.body).toMatchObject({
+					id: testUser.id,
+					role: "admin",
+				});
+			});
+
+			test("401 - Échec de promotion d'un utilisateur (token invalide)", async () => {
+				const response = await request(app)
+					.post(`/api/users/${testUser.id}/promote`)
+					.set("Authorization", "invalidtoken");
+
+				expect(response.status).toBe(401);
+			});
+
+			test("403 - Échec de promotion d'un utilisateur (utilisateur non admin)", async () => {
+				const response = await request(app)
+					.post(`/api/users/${testUser.id}/promote`)
+					.set("Authorization", token);
+
+				expect(response.status).toBe(403);
+			});
+
+			test("404 - Échec de promotion d'un utilisateur (utilisateur inexistant)", async () => {
+				const response = await request(app)
+					.post(`/api/users/${testUser.id}/promote`)
+					.set("Authorization", adminToken);
+
+				expect(response.status).toBe(404);
+			});
+		});
+	});
+
+	describe("Démotion - /users/{userId}/demote", () => {
+		describe("POST [ADMIN]", () => {
+			afterEach(async () => {
+				// TODO: Reset the user's role
+			});
+
+			test("200 - Démotion d'un utilisateur", async () => {
+				const response = await request(app)
+					.post(`/api/users/${testUser.id}/demote`)
+					.set("Authorization", adminToken);
+
+				expect(response.status).toBe(200);
+				expect(response.body).toMatchObject({
+					id: testUser.id,
+					role: "user",
+				});
+			});
+
+			test("401 - Échec de démotion d'un utilisateur (token invalide)", async () => {
+				const response = await request(app)
+					.post(`/api/users/${testUser.id}/demote`)
+					.set("Authorization", "invalidtoken");
+
+				expect(response.status).toBe(401);
+			});
+
+			test("403 - Échec de démotion d'un utilisateur (utilisateur non admin)", async () => {
+				const response = await request(app)
+					.post(`/api/users/${testUser.id}/demote`)
+					.set("Authorization", token);
+
+				expect(response.status).toBe(403);
+			});
+
+			test("404 - Échec de démotion d'un utilisateur (utilisateur inexistant)", async () => {
+				const response = await request(app)
+					.post(`/api/users/${testUser.id}/demote`)
+					.set("Authorization", adminToken);
+
+				expect(response.status).toBe(404);
+			});
+		});
+	});
+
 	describe("Utilisateur - /users/me", () => {
 		describe("GET [USER]", () => {
 			test("200 - Obtenir les informations de l'utilisateur connecté", async () => {
