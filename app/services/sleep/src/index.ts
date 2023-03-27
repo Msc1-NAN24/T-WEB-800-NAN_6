@@ -69,38 +69,66 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *       properties:
  *         title:
  *           type: string
+ *           descritpion: The title of the sleep place
+ *           example: Le petit nid
  *         type:
  *           type: string
+ *           descritpion: The type of the sleep place
+ *           example: Chambre d'hôte
  *         photo_url:
  *           type: string
+ *           descritpion: The url of the photo to display
+ *           example: https://www.google.com/url?sa=i&url=https%3A%2F%2Fw
  *         city:
  *           type: string
+ *           descritpion: The city where the sleep place is located
+ *           example: Paris
  *         zip:
  *           type: string
+ *           descritpion: The zip code of the city where the sleep place is located
+ *           example: 75000
  *         country:
  *           type: string
+ *           descritpion: The country where the sleep place is located
+ *           example: France
  *         nb_adults:
  *           type: integer
  *           format: int32
+ *           descritpion: The number of adults staying at the sleep place
+ *           example: 2
  *         nb_children:
  *           type: integer
  *           format: int32
+ *           descritpion: The number of children staying at the sleep place
+ *           example: 1
  *         avis:
  *           type: number
+ *           descritpion: The average rating of the sleep place
+ *           example: 4.5
  *           format: float
  *         description:
  *           type: string
+ *           descritpion: The description of the sleep place
+ *           example: Une chambre d'hôte très agréable
  *         service:
  *           type: string
+ *           descritpion: The service of the sleep place
+ *           example: AIRBNB
  *         checkin:
  *           type: string
  *           format: date-time
+ *           descritpion: The checkin of the sleep place
+ *           example: 2020-01-01T00:00:00.000Z
  *         checkout:
  *           type: string
  *           format: date-time
+ *           descritpion: The checkout of the sleep place
+ *           example: 2020-01-02T00:00:00.000Z
  *         price:
  *           type: number
+ *           descritpion: The price of the sleep place
  *           format: float
+ *           example: 100.00
  *     SleepWithId:
  *       allOf:
  *         - $ref: '#/components/schemas/Sleep'

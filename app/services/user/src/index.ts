@@ -45,7 +45,54 @@ const specs = swaggerJsdoc(options);
 // Middleware pour afficher la documentation Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-// Route de l'application pour l'authentification
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - firstName
+ *         - lastName
+ *         - email
+ *         - password
+ *         - isAdmin
+ *       properties:
+ *         firstName:
+ *           type: string
+ *           descritpion: Firstname of the user
+ *           example: John
+ *         lastName:
+ *           type: string
+ *           descritpion: Lastname of the user
+ *           example: Doe
+ *         email:
+ *           type: string
+ *           descritpion: Email of the user
+ *           example: john.doe@example.com
+ *         password:
+ *           type: string
+ *           descritpion: Password of the user
+ *           example: password123
+ *         isAdmin:
+ *           type: boolean
+ *           descritpion: Is the user an administrator?
+ *           example: false
+ *     UserWithId:
+ *       allOf:
+ *         - $ref: '#/components/schemas/User'
+ *         - type: object
+ *           properties:
+ *             id:
+ *               type: integer
+ *               format: int32
+ */
+
 /**
  * @swagger
  * /auth/login:
@@ -100,7 +147,7 @@ app.post('/auth/login', (req, res) => {
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/User'
+ *                 $ref: '#/components/schemas/UserWithId'
  *       401:
  *         description: Non autorisé
  */
@@ -130,7 +177,7 @@ app.get('/users', (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/UserWithId'
  *       401:
  *         description: Non autorisé
  *       404:
@@ -154,14 +201,14 @@ app.get('/users/:userId', (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UserInput'
+ *             $ref: '#/components/schemas/User'
  *     responses:
  *       201:
  *         description: Utilisateur créé avec succès
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/UserWithId'
  *       400:
  *         description: Requête invalide
  *       401:
@@ -192,14 +239,14 @@ app.post('/users', (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UserInput'
+ *             $ref: '#/components/schemas/User'
  *     responses:
  *       200:
  *         description: Utilisateur mis à jour avec succès
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/UserWithId'
  *       400:
  *         description: Requête invalide
  *       401:
@@ -238,55 +285,6 @@ app.put('/users/:userId', (req, res) => {
 app.delete('/users/:userId', (req, res) => {
   // Code pour supprimer un utilisateur
 });
-
-// Définition des composants de l'API pour Swagger
-/**
- * @swagger
- * components:
- *   securitySchemes:
- *     bearerAuth:
- *       type: http
- *       scheme: bearer
- *       bearerFormat: JWT
- *   schemas:
- *     UserInput:
- *       type: object
- *       properties:
- *         firstName:
- *           type: string
- *           example: John
- *         lastName:
- *           type: string
- *           example: Doe
- *         email:
- *           type: string
- *           example: john.doe@example.com
- *         password:
- *           type: string
- *           example: password123
- *         isAdmin:
- *           type: boolean
- *           example: false
- *     User:
- *       type: object
- *       properties:
- *         id:
- *           type: number
- *           example: 1
- *         firstName:
- *           type: string
- *           example: John
- *         lastName:
- *           type: string
- *           example: Doe
- *         email:
- *           type: string
- *           example: john.doe@example.com
- *         isAdmin:
- *           type: boolean
- *           example: false
- */
-// Fin de la définition des composants de l'API pour Swagger
 
 // Port d'écoute de l'application
 const port = process.env.PORT || 3000;

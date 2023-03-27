@@ -65,31 +65,40 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *         title:
  *           type: string
  *           description: The title of the event
+*           example: Visite musée du Louvre
  *         address:
  *           type: string
  *           description: The address where the event takes place
+ *           example: 1 rue de la Paix, 75001 Paris, France
  *         url:
  *           type: string
  *           description: The URL of the event's website
+ *           example: https://www.louvre.fr
  *         photo_url:
  *           type: string
  *           description: The URL of a photo of the event
+ *           example: https://www.louvre.fr/photo.jpg
  *         date:
  *           type: string
  *           format: date-time
  *           description: The date and time of the event
+ *           example: 2020-12-31T23:59:59Z
  *         duration:
  *           type: string
  *           description: The duration of the event
+ *           example: 2h
  *         price:
  *           type: number
  *           description: The price of the event
+ *           example: 10.5
  *         service:
  *           type: string
  *           description: A description of the services available at the event
+ *           example: GOOGLE
  *         description:
  *           type: string
  *           description: A description of the event
+ *           example: Visite du musée du Louvre
  *     EnjoyWithId:
  *       allOf:
  *         - $ref: '#/components/schemas/Enjoy'

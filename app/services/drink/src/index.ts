@@ -64,28 +64,36 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *         title:
  *           type: string
  *           description: The name of the bar
+ *           example: Le bar à bières
  *         photo_url:
  *           type: string
  *           description: The URL of a photo of the bar
+ *           example: https://www.bar.com/photo.jpg
  *         address:
  *           type: string
  *           description: The address of the bar
+ *           example: 1 rue du bar, 75000 Paris
  *         avis:
  *           type: number
  *           description: The rating of the bar
+ *           example: 4.5
  *         nb_adults:
  *           type: number
  *           description: The number of adults that can be seated at the bar
+ *           example: 10
  *         nb_children:
  *           type: number
  *           description: The number of children that can be seated at the bar
+ *           example: 5
  *         description:
  *           type: string
  *           description: A description of the bar
+ *           example: Le bar à bières est un bar où l'on peut boire des bières
  *         date:
  *           type: string
- *           format: date
+ *           format: date-time
  *           description: The date when the bar was added to the database
+ *           example: 2020-01-01T00:00:00.000Z
  *     DrinkWithId:
  *       allOf:
  *         - $ref: '#/components/schemas/Drink'

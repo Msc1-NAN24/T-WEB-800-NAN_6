@@ -64,28 +64,36 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *         title:
  *           type: string
  *           description: The name of the restaurant
+ *           example: Le Petit Bouchon
  *         photo_url:
  *           type: string
  *           description: The URL of a photo of the restaurant
+ *           example: https://www.lepetitbouchon.fr/wp-content/uploads/2019/03/le-petit-bouchon-restaurant-lyon-1.jpg
  *         address:
  *           type: string
  *           description: The address of the restaurant
+ *           example: 1 Rue de la République, 69001 Lyon
  *         avis:
  *           type: number
  *           description: The rating of the restaurant
+ *           example: 4.5
  *         nb_adults:
  *           type: number
  *           description: The number of adults that can be seated at the restaurant
+ *           example: 4
  *         nb_children:
  *           type: number
  *           description: The number of children that can be seated at the restaurant
+ *           example: 2
  *         description:
  *           type: string
  *           description: A description of the restaurant
+ *           example: Le Petit Bouchon est un restaurant de cuisine française situé à Lyon. Il propose une cuisine traditionnelle et des plats de saison.
  *         date:
  *           type: string
- *           format: date
- *           description: The date when the restaurant was added to the database
+ *           format: date-time
+ *           description: The date of the reservation
+ *           example: 2020-01-01T12:00:00.000Z
  *     EatWithId:
  *       allOf:
  *         - $ref: '#/components/schemas/Eat'

@@ -45,7 +45,93 @@ const specs = swaggerJsdoc(options);
 // Middleware pour afficher la documentation Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-// Route de l'application pour les recherches de moyens de locomotion
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Travel:
+ *       type: object
+ *       required:
+ *         - from_city
+ *         - from_airport
+ *         - to_city
+ *         - to_airport
+ *         - departure
+ *         - arrival
+ *         - duration
+ *         - price
+ *         - nb_adults
+ *         - nb_children
+ *         - cabin
+ *         - flight_number
+ *         - service
+ *       properties:
+ *         from_city:
+ *           type: string
+ *           descritpion: The city of departure
+ *           example: Nantes
+ *         from_airport:
+ *           type: string
+ *           descritpion: The airport of departure
+ *           example: NTE
+ *         to_city:
+ *           type: string
+ *           descritpion: The city of arrival
+ *           example: Paris
+ *         to_airport:
+ *           type: string
+ *           descritpion: The airport of arrival
+ *           example: CDG
+ *         departure:
+ *           type: string
+ *           format: date-time
+ *           descritpion: The departure date
+ *           example: 2020-01-01T12:00:00.000Z
+ *         arrival:
+ *           type: string
+ *           format: date-time
+ *           descritpion: The arrival date
+ *           example: 2020-01-01T15:00:00.000Z
+ *         duration:
+ *           type: string
+ *           descritpion: The duration of the flight
+ *           example: 2h30
+ *         price:
+ *           type: number
+ *           format: float
+ *           descritpion: The price of the flight
+ *           example: 100.00
+ *         nb_adults:
+ *           type: integer
+ *           format: int32
+ *           descritpion: The number of adult passengers
+ *           example: 1
+ *         nb_children:
+ *           type: integer
+ *           format: int32
+ *           descritpion: The number of child passengers
+ *           example: 0
+ *         cabin:
+ *           type: string
+ *           descritpion: The cabin class
+ *         flight_number:
+ *           type: string
+ *           descritpion: The flight number
+ *           example: AF1234
+ *         service:
+ *           type: string
+ *           descritpion: The microservice of the flight
+ *           example: AIRFRANCE
+ *     TravelWithId:
+ *       allOf:
+ *         - $ref: '#/components/schemas/Travel'
+ *         - type: object
+ *           properties:
+ *             id:
+ *               type: integer
+ *               format: int32
+ */
+
 /**
  * @swagger
  * /travel/list:
@@ -237,56 +323,6 @@ app.post('/travel', (req, res) => {
 
   res.status(201).json(createdTravel);
 });
-
-// Définition des composants de l'API pour Swagger
-/**
- * @swagger
- * components:
- *   schemas:
- *     Travel:
- *       type: object
- *       properties:
- *         from_city:
- *           type: string
- *         from_airport:
- *           type: string
- *         to_city:
- *           type: string
- *         to_airport:
- *           type: string
- *         departure:
- *           type: string
- *           format: date-time
- *         arrival:
- *           type: string
- *           format: date-time
- *         duration:
- *           type: string
- *         price:
- *           type: number
- *           format: float
- *         nb_adults:
- *           type: integer
- *           format: int32
- *         nb_children:
- *           type: integer
- *           format: int32
- *         cabin:
- *           type: string
- *         flight_number:
- *           type: string
- *         service:
- *           type: string
- *     TravelWithId:
- *       allOf:
- *         - $ref: '#/components/schemas/Travel'
- *         - type: object
- *           properties:
- *             id:
- *               type: integer
- *               format: int32
- */
-// Fin de la définition des composants de l'API pour Swagger
 
 // Port d'écoute de l'application
 const port = process.env.PORT || 3001;
