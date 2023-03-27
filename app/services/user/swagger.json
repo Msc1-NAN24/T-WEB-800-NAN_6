@@ -1,0 +1,281 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API utilisateur"
+  },
+  "basePath": "/api",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {
+    "jwt": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "jwt": []
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Authentification d'un utilisateur",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Informations d'authentification de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "johndoe@example.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "secret123"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authentification réussie",
+            "headers": {
+              "Authorization": {
+                "type": "string",
+                "description": "Token JWT d'authentification"
+              }
+            }
+          },
+          "401": {
+            "description": "Échec d'authentification"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Obtenir la liste des utilisateurs",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des utilisateurs",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "401": {
+            "description": "Non autorisé"
+          }
+        }
+      },
+      "post": {
+        "summary": "Créer un nouvel utilisateur",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Informations de l'utilisateur",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserInput"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Utilisateur créé avec succès",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Requête invalide"
+          },
+          "401": {
+            "description": "Non autorisé"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "summary": "Obtenir les informations d'un utilisateur",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "Identifiant de l'utilisateur",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informations de l'utilisateur",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Non autorisé"
+          },
+          "404": {
+            "description": "Utilisateur introuvable"
+          }
+        }
+      },
+      "put": {
+        "summary": "Mettre à jour les informations d'un utilisateur",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "Identifiant de l'utilisateur",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Nouvelles informations de l'utilisateur",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Utilisateur mis à jour avec succès",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Requête invalide"
+          },
+          "401": {
+            "description": "Non autorisé"
+          },
+          "404": {
+            "description": "Utilisateur introuvable"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Supprimer un utilisateur",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "Identifiant de l'utilisateur",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Utilisateur supprimé avec succès"
+          },
+          "401": {
+            "description": "Non autorisé"
+          },
+          "404": {
+            "description": "Utilisateur introuvable"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "UserInput": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "John"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "johndoe@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "secret123"
+        },
+        "isAdmin": {
+          "type": "boolean",
+          "example": false
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "firstName": {
+          "type": "string",
+          "example": "John"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "johndoe@example.com"
+        },
+        "isAdmin": {
+          "type": "boolean",
+          "example": false
+        }
+      }
+    }
+  }
+}
