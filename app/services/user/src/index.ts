@@ -75,14 +75,14 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *       format: int32
  *       description: Unique identifier of the user
  *       example: 1
+ *     Role:
+ *       type: string
+ *       description: Le rôle de l'utilisateur
+ *       example: admin
  * 
  *     UserRegistration:
  *       type: object
- *       required:
- *         - first_name
- *         - last_name
- *         - email
- *         - password
+ *       required: [first_name, last_name, email, password]
  *       properties:
  *         first_name:
  *           $ref: '#/components/schemas/FirstName'
@@ -94,10 +94,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *           $ref: '#/components/schemas/Password'
  *     UserInformation:
  *       type: object
- *       required:
- *         - first_name
- *         - last_name
- *         - email
+ *       required: [first_name, last_name, email]
  *       properties:
  *         first_name:
  *           $ref: '#/components/schemas/FirstName'
@@ -107,9 +104,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *           $ref: '#/components/schemas/Email'
  *     UserLogin:
  *       type: object
- *       required:
- *         - email
- *         - password
+ *       required: [email, password]
  *       properties:
  *         email:
  *           $ref: '#/components/schemas/Email'
@@ -128,11 +123,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *           $ref: '#/components/schemas/Password'
  *     UserWithId:
  *       type: object
- *       required:
- *         - id
- *         - first_name
- *         - last_name
- *         - email
+ *       required: [id, first_name, last_name, email]
  *       properties:
  *         id:
  *           $ref: '#/components/schemas/Id'
@@ -142,6 +133,14 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *           $ref: '#/components/schemas/LastName'
  *         email:
  *           $ref: '#/components/schemas/Email'
+ *     UserWithRole:
+ *       type: object
+ *       required: [id, role]
+ *       properties:
+ *         id:
+ *           $ref: '#/components/schemas/Id'
+ *         role:
+ *           $ref: '#/components/schemas/Role'
  */
 
 /**
@@ -388,6 +387,105 @@ app.route('/users/:userId')
   })
   .delete((req, res) => {
     // Code pour supprimer un utilisateur
+  });
+
+/**
+ * @swagger
+ * /users/role:
+ *   get:
+ *     summary: Obtenir la liste des rôles d'utilisateurs
+ *     description: Obtient la liste de tous les rôles d'utilisateurs dans la base de données
+ *     security:
+ *       - bearerAuth: []
+ *       - adminRole: []
+ *     responses:
+ *       200:
+ *         description: Liste des rôles d'utilisateurs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 roles:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Role'
+ *       401:
+ *         description: Non autorisé
+ */
+app.get('/users/role', (req, res) => {
+  // Code pour obtenir la liste des rôles d'utilisateurs
+});
+
+/**
+ * @swagger
+ * /users/{userId}/role:
+ *   get:
+ *     summary: Obtenir le rôle d'un utilisateur
+ *     description: Obtient le rôle d'un utilisateur en fonction de son ID
+ *     security:
+ *       - bearerAuth: []
+ *       - adminRole: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: ID de l'utilisateur
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Rôle de l'utilisateur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserWithRole'
+ *       401:
+ *         description: Non autorisé
+ *       404:
+ *         description: Utilisateur introuvable
+ *   put:
+ *     summary: Mettre à jour le rôle d'un utilisateur
+ *     description: Met à jour le rôle d'un utilisateur en fonction de son ID
+ *     security:
+ *       - bearerAuth: []
+ *       - adminRole: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: ID de l'utilisateur
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               role:
+ *                 $ref: '#/components/schemas/Role'
+ *     responses:
+ *       200:
+ *         description: Rôle de l'utilisateur mis à jour avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserWithRole'
+ *       400:
+ *         description: Requête invalide
+ *       401:
+ *         description: Non autorisé
+ *       404:
+ *         description: Utilisateur introuvable
+ */
+app.route('/users/:userId/role')
+  .get((req, res) => {
+    // Code pour obtenir le rôle d'un utilisateur
+  })
+  .put((req, res) => {
+    // Code pour mettre à jour le rôle d'un utilisateur
   });
 
 // Port d'écoute de l'application
