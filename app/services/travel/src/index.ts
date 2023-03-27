@@ -48,152 +48,209 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 /**
  * @swagger
  * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  *   schemas:
- *     Travel:
+ *     FromCity:
+ *       type: string
+ *       description: The city of departure
+ *       example: Nantes
+ *     FromAirport:
+ *       type: string
+ *       description: The airport of departure
+ *       example: NTE
+ *     ToCity:
+ *       type: string
+ *       description: The city of arrival
+ *       example: Paris
+ *     ToAirport:
+ *       type: string
+ *       description: The airport of arrival
+ *       example: CDG
+ *     Departure:
+ *       type: string
+ *       format: date-time
+ *       description: The departure date
+ *       example: 2020-01-01T12:00:00.000Z
+ *     Arrival:
+ *       type: string
+ *       format: date-time
+ *       description: The arrival date
+ *       example: 2020-01-01T15:00:00.000Z
+ *     Duration:
+ *       type: string
+ *       description: The duration of the travel
+ *       example: 2h30
+ *     Price:
+ *       type: number
+ *       format: float
+ *       description: The price of the travel
+ *       example: 100.00
+ *     Avis:
+ *       type: string
+ *       description: The avis of the travel
+ *       example: 4.5
+ *     NbAdults:
+ *       type: integer
+ *       format: int32
+ *       description: The number of adult passengers
+ *       example: 1
+ *     NbChildren:
+ *       type: integer
+ *       format: int32
+ *       description: The number of child passengers
+ *       example: 0
+ *     Cabin:
+ *       type: string
+ *       description: The cabin class
+ *       example: Economy
+ *     TravelId:
+ *       type: string
+ *       description: The travel number
+ *       example: AF1234
+ *     TravelUrl:
+ *       type: string
+ *       description: The travel url
+ *       example: https://www.airfrance.fr/FR/fr/local/homepage
+ *     Service:
+ *       type: string
+ *       description: The microservice of the travel
+ *       example: AIRFRANCE
+ *     MinAvis:
+ *       type: number
+ *       format: float
+ *       description: The minimum avis of the travel
+ *       example: 4.5
+ *     MaxAvis:
+ *       type: number
+ *       format: float
+ *       description: The maximum avis of the travel
+ *       example: 5.0
+ *     MinPrice:
+ *       type: number
+ *       format: float
+ *       description: The minimum price of the travel
+ *       example: 50
+ *     MaxPrice:
+ *       type: number
+ *       format: float
+ *       description: The maximum price of the travel
+ *       example: 500
+ *     Id:
+ *       type: integer
+ *       format: int32
+ *       description: Unique identifier of the travel
+ *       example: 1
+ * 
+ * 
+ *     TravelSearch:
  *       type: object
- *       required:
- *         - from_city
- *         - from_airport
- *         - to_city
- *         - to_airport
- *         - departure
- *         - arrival
- *         - duration
- *         - price
- *         - nb_adults
- *         - nb_children
- *         - cabin
- *         - flight_number
- *         - service
+ *       required: [from_city, to_city, departure, arrival, nb_adults, nb_children]
  *       properties:
  *         from_city:
- *           type: string
- *           description: The city of departure
- *           example: Nantes
- *         from_airport:
- *           type: string
- *           description: The airport of departure
- *           example: NTE
+ *           $ref: '#/components/schemas/FromCity'
  *         to_city:
- *           type: string
- *           description: The city of arrival
- *           example: Paris
- *         to_airport:
- *           type: string
- *           description: The airport of arrival
- *           example: CDG
+ *           $ref: '#/components/schemas/ToCity'
  *         departure:
- *           type: string
- *           format: date-time
- *           description: The departure date
- *           example: 2020-01-01T12:00:00.000Z
+ *           $ref: '#/components/schemas/Departure'
  *         arrival:
- *           type: string
- *           format: date-time
- *           description: The arrival date
- *           example: 2020-01-01T15:00:00.000Z
- *         duration:
- *           type: string
- *           description: The duration of the flight
- *           example: 2h30
- *         price:
- *           type: number
- *           format: float
- *           description: The price of the flight
- *           example: 100.00
+ *           $ref: '#/components/schemas/Arrival'
  *         nb_adults:
- *           type: integer
- *           format: int32
- *           description: The number of adult passengers
- *           example: 1
+ *           $ref: '#/components/schemas/NbAdults'
  *         nb_children:
- *           type: integer
- *           format: int32
- *           description: The number of child passengers
- *           example: 0
+ *           $ref: '#/components/schemas/NbChildren'
+ *         min_avis:
+ *           $ref: '#/components/schemas/MinAvis'
+ *         max_avis:
+ *           $ref: '#/components/schemas/MaxAvis'
+ *         min_price:
+ *           $ref: '#/components/schemas/MinPrice'
+ *         max_price:
+ *           $ref: '#/components/schemas/MaxPrice'
+ *     TravelFind:
+ *       type: object
+ *       required: [from_city, from_airport, to_city, to_airport, departure, arrival, duration, price, avis, nb_adults, nb_children, cabin, travel_id, travel_url, service]
+ *       properties:
+ *         from_city:
+ *           $ref: '#/components/schemas/FromCity'
+ *         from_airport:
+ *           $ref: '#/components/schemas/FromAirport'
+ *         to_city:
+ *           $ref: '#/components/schemas/ToCity'
+ *         to_airport:
+ *           $ref: '#/components/schemas/ToAirport'
+ *         departure:
+ *           $ref: '#/components/schemas/Departure'
+ *         arrival:
+ *           $ref: '#/components/schemas/Arrival'
+ *         duration:
+ *           $ref: '#/components/schemas/Duration'
+ *         price:
+ *           $ref: '#/components/schemas/Price'
+ *         avis:
+ *           $ref: '#/components/schemas/Avis'
+ *         nb_adults:
+ *           $ref: '#/components/schemas/NbAdults'
+ *         nb_children:
+ *           $ref: '#/components/schemas/NbChildren'
  *         cabin:
- *           type: string
- *           description: The cabin class
- *         flight_number:
- *           type: string
- *           description: The flight number
- *           example: AF1234
+ *           $ref: '#/components/schemas/Cabin'
+ *         travel_id:
+ *           $ref: '#/components/schemas/TravelId'
+ *         travel_url:
+ *           $ref: '#/components/schemas/TravelUrl'
  *         service:
- *           type: string
- *           description: The microservice of the flight
- *           example: AIRFRANCE
+ *           $ref: '#/components/schemas/Service'
+ *     Travel:
+ *       type: object
+ *       required: [from_city, from_airport, to_city, to_airport, departure, arrival, duration, avis, travel_id, travel_url, service]
+ *       properties:
+ *         from_city:
+ *           $ref: '#/components/schemas/FromCity'
+ *         from_airport:
+ *           $ref: '#/components/schemas/FromAirport'
+ *         to_city:
+ *           $ref: '#/components/schemas/ToCity'
+ *         to_airport:
+ *           $ref: '#/components/schemas/ToAirport'
+ *         departure:
+ *           $ref: '#/components/schemas/Departure'
+ *         arrival:
+ *           $ref: '#/components/schemas/Arrival'
+ *         duration:
+ *           $ref: '#/components/schemas/Duration'
+ *         avis:
+ *           $ref: '#/components/schemas/Avis'
+ *         travel_id:
+ *           $ref: '#/components/schemas/TravelId'
+ *         travel_url:
+ *           $ref: '#/components/schemas/TravelUrl'
+ *         service:
+ *           $ref: '#/components/schemas/Service'
  *     TravelWithId:
  *       allOf:
- *         - $ref: '#/components/schemas/Travel'
+ *         - required: [id]
  *         - type: object
  *           properties:
  *             id:
- *               type: integer
- *               format: int32
+ *               $ref: '#/components/schemas/Id'
+ *         - $ref: '#/components/schemas/Travel'
  */
 
 /**
  * @swagger
  * /travel/list:
  *   get:
- *     summary: Get a list of travel bookings
- *     tags:
- *       - Travel
- *     parameters:
- *       - name: from_city
- *         in: query
- *         description: The city of departure
- *         required: true
- *         schema:
- *           type: string
- *       - name: to_city
- *         in: query
- *         description: The city of arrival
- *         required: true
- *         schema:
- *           type: string
- *       - name: nb_adults
- *         in: query
- *         description: The number of adult passengers
- *         required: true
- *         schema:
- *           type: integer
- *           format: int32
- *       - name: nb_children
- *         in: query
- *         description: The number of child passengers
- *         required: true
- *         schema:
- *           type: integer
- *           format: int32
- *       - name: departure
- *         in: query
- *         description: The departure date
- *         required: true
- *         schema:
- *           type: string
- *           format: date-time
- *       - name: arrival
- *         in: query
- *         description: The arrival date
- *         required: true
- *         schema:
- *           type: string
- *           format: date-time
- *       - name: min_price
- *         in: query
- *         description: The minimum price
- *         required: false
- *         schema:
- *           type: number
- *           format: float
- *       - name: max_price
- *         in: query
- *         description: The maximum price
- *         required: false
- *         schema:
- *           type: number
- *           format: float
+ *     summary: Get a list of travel bookings by calling microservices
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TravelSearch'
  *     responses:
  *       '200':
  *         description: A list of travel bookings
@@ -202,7 +259,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Travel'
+ *                 $ref: '#/components/schemas/TravelFind'
  */
 app.get('/travel/list', (req, res) => {
   // Code to retrieve the list of travel bookings
@@ -214,8 +271,9 @@ app.get('/travel/list', (req, res) => {
  * /travel:
  *   get:
  *     summary: Get all travel bookings
- *     tags:
- *       - Travel
+ *     security:
+ *       - bearerAuth: []
+ *       - adminRole: []
  *     responses:
  *       '200':
  *         description: A list of travel bookings
@@ -224,20 +282,56 @@ app.get('/travel/list', (req, res) => {
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Travel'
+ *                 $ref: '#/components/schemas/TravelWithId'
+ *   post:
+ *     summary: Create a new travel booking
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       description: The travel booking to create
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Travel'
+ *     responses:
+ *       '201':
+ *         description: The travel booking was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TravelWithId'
+ *       '401':
+ *         description: Unauthorized
  */
-app.get('/travel', (req, res) => {
-  // Code to retrieve all travel bookings
-  res.send('All travel bookings');
-});
+app.route('/travel')
+  .get((req, res) => {
+    // Code to retrieve all travel bookings
+    res.send('All travel bookings');
+  })
+  .post((req, res) => {
+    const newTravel = req.body;
+
+    // Code to create a new travel booking with the provided data
+    // and retrieve the created travel booking with an ID
+    // Pay attention to the combination od travel_id and service, it must be unique
+
+    const createdTravel = {
+      ...newTravel,
+      id: 1, // replace with the actual ID of the created travel booking
+    };
+
+    res.status(201).json(createdTravel);
+  });
 
 /**
  * @swagger
  * /travel/{travelId}:
  *   get:
  *     summary: Get a travel booking by ID
- *     tags:
- *       - Travel
+ *     security:
+ *       - bearerAuth: []
+ *       - adminRole: []
  *     parameters:
  *       - name: travelId
  *         in: path
@@ -263,12 +357,11 @@ app.get('/travel/:travelId', (req, res) => {
 
 /**
  * @swagger
- * /travel/{travelId}:
  * /verify/{travelId}:
- *   get:
- *     summary: Verify if a travel booking still exists
- *     tags:
- *       - Travel
+ *   put:
+ *     summary: Update if a travel booking have been modified
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: travelId
  *         in: path
@@ -279,49 +372,16 @@ app.get('/travel/:travelId', (req, res) => {
  *           format: int32
  *     responses:
  *       '200':
- *         description: The travel booking still exists
+ *         description: The travel booking is the same
+ *       '201':
+ *         description: The travel booking has been modified
  *       '404':
  *         description: The travel booking no longer exists
  */
-app.get('/verify/:travelId', (req, res) => {
-  // Code to verify if a travel booking still exists
+app.put('/verify/:travelId', (req, res) => {
+  // Call the microservice to verify if a travel booking still exists (It uses the servcie name and the travel_id)
+  // Update the travel booking with the new data if it still exists but has been modified
   res.send('Verify if a travel booking still exists');
-});
-
-/**
- * @swagger
- * /travel:
- *   post:
- *     summary: Create a new travel booking
- *     tags:
- *       - Travel
- *     requestBody:
- *       description: The travel booking to create
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Travel'
- *     responses:
- *       '201':
- *         description: The created travel booking
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/TravelWithId'
- */
-app.post('/travel', (req, res) => {
-  const newTravel = req.body;
-
-  // Code to create a new travel booking with the provided data
-  // and retrieve the created travel booking with an ID
-
-  const createdTravel = {
-    ...newTravel,
-    id: 1, // replace with the actual ID of the created travel booking
-  };
-
-  res.status(201).json(createdTravel);
 });
 
 // Port d'écoute de l'application

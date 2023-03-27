@@ -119,6 +119,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *           $ref: '#/components/schemas/LastName'
  *         email:
  *           $ref: '#/components/schemas/Email'
+ *         last_password:
+ *           $ref: '#/components/schemas/Password'
  *         password:
  *           $ref: '#/components/schemas/Password'
  *     UserWithId:
@@ -314,6 +316,7 @@ app.get('/users', (req, res) => {
  *         description: ID de l'utilisateur
  *         schema:
  *           type: number
+ *           format: int32
  *     responses:
  *       200:
  *         description: Informations de l'utilisateur
@@ -338,6 +341,7 @@ app.get('/users', (req, res) => {
  *         description: ID de l'utilisateur
  *         schema:
  *           type: number
+ *           format: int32
  *     requestBody:
  *       required: true
  *       content:
@@ -370,6 +374,7 @@ app.get('/users', (req, res) => {
  *         description: ID de l'utilisateur
  *         schema:
  *           type: number
+ *           format: int32
  *     responses:
  *       204:
  *         description: Utilisateur supprimé avec succès
