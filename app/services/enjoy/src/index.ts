@@ -47,15 +47,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 /**
  * @swagger
- * tags:
- *   name: Enjoy
- */
-
-/**
- * @swagger
  * components:
  *   schemas:
- *     EnjoyEvent:
+ *     Enjoy:
  *       type: object
  *       required:
  *         - title
@@ -96,9 +90,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *         description:
  *           type: string
  *           description: A description of the event
- *     EnjoyEventWithId:
+ *     EnjoyWithId:
  *       allOf:
- *         - $ref: '#/components/schemas/EnjoyEvent'
+ *         - $ref: '#/components/schemas/Enjoy'
  *         - type: object
  *           properties:
  *             id:
@@ -159,7 +153,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/EnjoyEvent'
+ *                 $ref: '#/components/schemas/Enjoy'
  */
 app.get('/enjoy/list', (req, res) => {
   // TODO: implement route
@@ -185,7 +179,7 @@ app.get('/enjoy/list', (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/EnjoyEvent'
+ *               $ref: '#/components/schemas/Enjoy'
  */
 app.get('/enjoy/:eventId', (req, res) => {
   // TODO: implement route
@@ -212,6 +206,53 @@ app.get('/enjoy/:eventId', (req, res) => {
  *         description: The event does not exist
  */
 app.get('/enjoy/verify/:eventId', (req, res) => {
+  // TODO: implement route
+});
+
+/**
+ * @swagger
+ * /enjoy:
+ *   post:
+ *     summary: Create a new enjoyable event
+ *     tags:
+ *       - Enjoy
+ *     requestBody:
+ *       description: The event to create
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Enjoy'
+ *     responses:
+ *       '201':
+ *         description: The event was created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Enjoy'
+ */
+app.post('/enjoy', (req, res) => {
+  // TODO: implement route
+});
+
+/**
+ * @swagger
+ * /enjoy:
+ *   get:
+ *     summary: Get all enjoyable events
+ *     tags:
+ *       - Enjoy
+ *     responses:
+ *       '200':
+ *         description: A list of all enjoyable events
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Enjoy'
+ */
+app.get('/enjoy', (req, res) => {
   // TODO: implement route
 });
 

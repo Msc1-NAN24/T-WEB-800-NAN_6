@@ -51,6 +51,21 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
  *   schemas:
  *     Sleep:
  *       type: object
+ *       required:
+ *         - title
+ *         - type
+ *         - photo_url
+ *         - city
+ *         - zip
+ *         - country
+ *         - nb_adults
+ *         - nb_children
+ *         - avis
+ *         - description
+ *         - service
+ *         - checkin
+ *         - checkout
+ *         - price
  *       properties:
  *         title:
  *           type: string
