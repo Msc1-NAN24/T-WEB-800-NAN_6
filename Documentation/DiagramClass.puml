@@ -15,7 +15,6 @@ class Voyage{
     id: int
     voyage: JSON
     categorie: string
-    reserve: bool
 }
 
 class Vol{
@@ -30,6 +29,7 @@ class Vol{
     nombreAdulte: int
     nombreEnfant: int
 }
+
 
 class Hotel{
     id: int
@@ -63,10 +63,25 @@ class Bars{
     barId: int
     date: date
     nombrePersonne: int
-    reserve: bool
     coordonnees : string
 }
 
-Voyage --> User
+class VoyageEtape {
+    id: int
+    voyage: Voyage
+    nameTable: int
+    idDes: int
+    reserve: bool
+}
+
+
+User <-- Voyage: "1..*"
+Voyage --> VoyageEtape: "1..*"
+VoyageEtape <-- Vol: "1"
+VoyageEtape <-- Bars: "1"
+VoyageEtape <-- Restaurant: "1"
+VoyageEtape <-- Hotel: "1"
+VoyageEtape <-- Evenement: "1"
+
 
 @enduml
