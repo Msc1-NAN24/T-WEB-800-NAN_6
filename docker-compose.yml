@@ -1,119 +1,120 @@
 version: "3"
 
 services:
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    ports:
-      - "9283:80"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    networks:
-      - my-network
-
+  #_________________
+  # Api Gateway
+  #_________________
   # api-gateway:
-  #   image: api-gateway-image
+  #   build:
+  #     context: ./backend/gateway
+  #   labels:
+  #     - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true"
+  #     - "com.github.jrcs.letsencrypt_nginx_proxy_companion.docker_gen=true"
+  #   environment:
+  #     VIRTUAL_HOST: gateway.localhost
+  #     LETSENCRYPT_HOST: gateway.localhost
+  #     LETSENCRYPT_EMAIL: ewen.pinson@epitech.eu
+  #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
+  #     MYSQL_USER: ${MYSQL_USER}
+  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  #   expose:
+  #     - ${GATEWAY_PORT}
   #   deploy:
   #     replicas: 1
   #     placement:
   #       constraints:
   #         - node.role == manager
   #     labels:
-  #       - "traefik.http.services.api-gateway.loadbalancer.server.port=8080"
-  #     restart_policy:
-  #       condition: any
+  #       - "traefik.http.services.api-gateway.loadbalancer.server.port=8000"
   #   networks:
-  #     - my-network
+  #     - nginx-proxy
+  #     - microservices
+  #     - backend
 
-  front:
+  #_________________
+  # Client Front
+  #_________________
+  client:
     build:
-      context: ./app/frontend
-    container_name: app-front
-    ports:
-      - "9282:80"
-
-  #Micro-services
-  # hotels:
-  #   image: hotels-image
-  #   deploy:
-  #     replicas: 2
-  #     resources:
-  #       limits:
-  #         cpus: '0.5'
-  #         memory: '512M'
-  #     restart_policy:
-  #       condition: on-failure
-  #   networks:
-  #     - my-network
-
-  # users:
-  #   image: users-image
-  #   environment:
-  #     - DB_HOST=db
-  #     - DB_USER=root
-  #     - DB_PASSWORD=secret
-  #   deploy:
-  #     replicas: 2
-  #     resources:
-  #       limits:
-  #         cpus: '0.5'
-  #         memory: '512M'
-  #     restart_policy:
-  #       condition: on-failure
-  #   networks:
-  #     - my-network
-
-  # vols:
-  #   image: vols-image
-  #       deploy:
-  #   deploy:
-  #     replicas: 2
-  #     resources:
-  #       limits:
-  #         cpus: '0.5'
-  #         memory: '512M'
-  #     restart_policy:
-  #       condition: on-failure
-  #   networks:
-  #     - my-network
-
-  # evenements:
-  #   image: evenements-image
-  #   deploy:
-  #     replicas: 2
-  #     resources:
-  #       limits:
-  #         cpus: '0.5'
-  #         memory: '512M'
-  #     restart_policy:
-  #       condition: on-failure
-
-  #   networks:
-  #     - my-network
-
-  # bar:
-  #   image: bar-image
-  #   deploy:
-  #     replicas: 2
-  #     resources:
-  #       limits:
-  #         cpus: '0.5'
-  #         memory: '512M'
-  #     restart_policy:
-  #       condition: on-failure
-  #   networks:
-  #     - my-network
-
-  db:
-    image: mysql
+      context: app/client
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true"
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.docker_gen=true"
     environment:
-      - MYSQL_DATABASE=mydb
-      - MYSQL_ROOT_PASSWORD=secret
-    volumes:
-      - ./db_data:/var/lib/mysql
+      LETSENCRYPT_HOST: localhost
+      VIRTUAL_HOST: localhost
+    expose:
+      - ${CLIENT_PORT}
     networks:
-      - my-network
+      - nginx-proxy
+      - microservices
 
+  #_________________
+  # Database
+  #_________________
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
+    volumes:
+      - .app/db_data:/var/lib/mysql
+    networks:
+      - backend
+      - microservices
+
+  #_________________
+  # Database Manager
+  #_________________
+  phpmyadmin:
+    image: phpmyadmin
+    expose:
+      - 8080
+    environment:
+      VIRTUAL_HOST: adminsql.localhost
+      LETSENCRYPT_HOST: adminsql.localhost
+      PMA_ARBITRARY: 1
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      PMA_HOST: db
+    networks:
+      - nginx-proxy
+      - backend
+
+#_________________
+# Micro services
+#_________________
+# users:
+#   image: ./microservice/users
+#   environment:
+#     - DB_HOST=db
+#     - DB_USER=root
+#     - DB_PASSWORD=secret
+#   deploy:
+#     replicas: 2
+#     resources:
+#       limits:
+#         cpus: "0.5"
+#         memory: "512M"
+#     restart_policy:
+#       condition: on-failure-
+#   depends_on:
+#     - db
+#   networks:
+#     - microservices
+#     - backend
+
+#_________________
+# Networks
+#_________________
 networks:
-  my-network:
+  backend:
+  microservices:
     driver: overlay
     attachable: true
+  nginx-proxy:
+    external:
+      name: nginx-proxy
