@@ -1,0 +1,120 @@
+@startuml
+hide methods
+
+class User {
+    id: int
+    role: string
+    nom: string
+    prenom: string
+    password: string
+    email: email
+}
+
+class UserTrip {
+    id: int
+    user: User
+    trip: Trip
+}
+
+class Trip {
+    id: int
+    name: string
+    ' isShared: bool (c'est pour que les personnes puissent l'avoir en recommandation pour l'importer)
+}
+
+class Travel{
+    id: int
+    type: string
+    ' fromCity: string
+    fromAdress: string
+    ' toCity: string
+    toAdress: string
+    departure: date
+    arrival: date
+    avis: int
+    description: string
+    travelId: string
+    travelUrl: string
+    service: string
+}
+
+
+class Sleep{
+    id: int
+    type: string
+    adress: string
+    arrival: date
+    departure: date
+    avis: int
+    description: string
+    sleepId: string
+    sleepUrl: string
+    service: string
+}
+
+class Eat{
+    id: int
+    type: string
+    adress: string
+    date: date
+    avis: int
+    description: string
+    eatId: string
+    eatUrl: string
+    service: string
+}
+
+class Enjoy{
+    id: int
+    type: string
+    adress: string
+    date: date
+    avis: int
+    description: string
+    enjoyId: string
+    enjoyUrl: string
+    service: string
+}
+
+class Drink{
+    id: int
+    type: string
+    adress: string
+    ' date: date
+    avis: int
+    description: string
+    drinkId: string
+    drinkUrl: string
+    service: string
+}
+
+class TripStep {
+    id: int
+    trip: Trip
+    tableName: int
+    idInTable: int
+    ' nbAdults: int
+    ' nbChildren: int
+    price: int
+    isReserved: bool
+    isShared: bool
+}
+
+class SharedTrip {
+    id: int
+    name: string
+}
+
+
+SharedTrip --> TripStep: "1..*"
+User --> UserTrip: "1..*"
+UserTrip <-- Trip: "1..*"
+Trip --> TripStep: "1..*"
+TripStep <-- Travel: "1"
+TripStep <-- Drink: "1"
+TripStep <-- Eat: "1"
+TripStep <-- Sleep: "1"
+TripStep <-- Enjoy: "1"
+
+
+@enduml
