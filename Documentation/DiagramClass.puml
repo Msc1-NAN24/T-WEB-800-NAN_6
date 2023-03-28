@@ -1,0 +1,87 @@
+@startuml
+hide methods
+
+class User {
+    id: int
+    role: string
+    nom: string
+    prenom: string
+    password: string
+    email: email
+}
+
+class Voyage{
+    user: User
+    id: int
+    voyage: JSON
+    categorie: string
+}
+
+class Vol{
+    id: int
+    apiId: int
+    depart: string
+    destination: string
+    coordonnées: string
+    dateDepart: date
+    dateArrivee: date
+    prix: int
+    nombreAdulte: int
+    nombreEnfant: int
+}
+
+
+class Hotel{
+    id: int
+    apiId: int
+    coordonnées: string
+    dateDepart: date
+    dateArrivee: date
+    prix: int
+    nombreAdulte: int
+    nombreEnfant: int
+}
+
+class Restaurant{
+    id: int
+    restaurantId: int
+    date: date
+    nombrePersonne: int
+    coordonnees: string
+}
+
+class Evenement{
+    id: int
+    evenement_id: int
+    date: date
+    nombrePersonne : int
+    prix: int
+}
+
+class Bars{
+    id: int
+    barId: int
+    date: date
+    nombrePersonne: int
+    coordonnees : string
+}
+
+class VoyageEtape {
+    id: int
+    voyage: Voyage
+    nameTable: int
+    idDes: int
+    reserve: bool
+}
+
+
+User <-- Voyage: "1..*"
+Voyage --> VoyageEtape: "1..*"
+VoyageEtape <-- Vol: "1"
+VoyageEtape <-- Bars: "1"
+VoyageEtape <-- Restaurant: "1"
+VoyageEtape <-- Hotel: "1"
+VoyageEtape <-- Evenement: "1"
+
+
+@enduml
